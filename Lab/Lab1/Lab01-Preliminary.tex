@@ -1,0 +1,303 @@
+\documentclass[12pt,a4paper]{article}
+%\usepackage{ctex}
+\usepackage{amsmath,amscd,amsbsy,amssymb,latexsym,url,bm,amsthm}
+\usepackage{epsfig,graphicx,subfigure}
+\usepackage{enumitem,balance}
+\usepackage{wrapfig}
+\usepackage{mathrsfs,euscript}
+\usepackage[x11names,svgnames,dvipsnames]{xcolor}
+\usepackage{hyperref}
+\usepackage[vlined,ruled,commentsnumbered,linesnumbered]{algorithm2e}
+\usepackage{listings}
+%\usepackage{fontspec}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}
+\newtheorem*{solution}{Solution}
+\newtheorem{definition}{Definition}
+\theoremstyle{definition}
+
+
+%\numberwithin{equation}{section}
+%\numberwithin{figure}{section}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\postscript}[2]
+ {\setlength{\epsfxsize}{#2\hsize}
+  \centerline{\epsfbox{#1}}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+\makeatletter \renewenvironment{proof}[1][Proof] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+\makeatletter
+\renewenvironment{solution}[1][Solution] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+
+
+\definecolor{codegreen}{rgb}{0.44,0.68,0.28}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.96,0.96,0.96}
+
+\lstset{ 
+language=C++, 
+frame=shadowbox,
+keywordstyle = \color{blue}\bfseries, 
+commentstyle=\color{codegreen}, 
+tabsize = 4, 
+backgroundcolor=\color{backcolour}, 
+numbers=left,                    
+numbersep=5pt,
+breaklines=true, 
+escapechar=|,
+emph = {int,float,double,char},emphstyle=\color{orange}, 
+emph ={[2]const, typedef},emphstyle = {[2]\color{red}} } 
+
+
+ 
+\begin{document}
+\noindent
+
+%========================================================================
+\noindent\framebox[\linewidth]{\shortstack[c]{
+\Large{\textbf{Lab01-Preliminary}}\vspace{1mm}\\
+VE281 - Data Structures and Algorithms, Xiaofeng Gao, TA: Qingmin Liu, Autumn 2019}}
+%CS26019 - Algorithm Design and Analysis, Xiaofeng Gao, Autumn 2019}}
+\begin{center}
+\footnotesize{\color{red}$*$ Please upload your assignment to website. Contact webmaster for any questions.}
+
+\footnotesize{\color{blue}$*$ Name: Jin Zhejian  \quad Student ID: {517370910167} \quad Email: jinzhejian@outlook.com}
+\end{center}
+
+
+\begin{enumerate}
+
+\item What is the time complexity of the following code?
+
+
+\begin{lstlisting}[language=C++]
+// REQUIRES: an integer k
+// EFFECTS: return the number of times that Line|\color{codegreen}~\ref{Line-Count}| is executed
+int count(int k)
+{
+	int count = 0;
+	int n = pow(2,k); // n=2^k
+	while (n>=1)
+	{
+		int j;
+   		for (j=0;j<n;j++)
+   		{
+   			count += 1;  |\label{Line-Count}|	
+   		}
+   		n /= 2;
+	}
+	return count;
+}
+\end{lstlisting}
+
+
+
+\begin{solution}
+	In the \textbf{while} loop, the inner \textbf{for} loop always executes n times, and n exponentially declines in each \textbf{while} loop, because at the end of each \textbf{while} loop, \textbf{n} is divided by 2. Therefore, the statement \textbf{count += 1} is executed precisely $\sum_{0}^{k} 2^i = 2^k -1$ times. Thus, the time complexity of this algorithm is $\Theta(2^k)$.
+\end{solution}
+
+
+\item Given an array \textbf{nums} of $n$ integers, are there elements $a, b, c$ in nums such that $a + b + c = 0?$ Write a program to find all unique triplets in the array which gives the sum of zero. Give your code as the answer. \textbf{Claim that the time complexity of your program should be less than or equal to $O(n^2)$.}
+
+{\color{purple}Examples: Input array [-1, 0, 1, 2, -1, -4], the solution is [[-1, 0, 1], [-1, -1, 2]]}
+
+
+
+\begin{solution}
+Please explain your design and fill in the following block:
+
+	\begin{lstlisting}[language=C++]
+// REQUIRES: an integer array nums of size n
+// EFFECTS: return a list of triplets, the sum of each triplet equals to 0.
+// MY DESIGN: First, I sort the array ascendingly. Then, I create a loop from the 1st number to the 2nd last number, and I set two index numbers, one denotes to the 2nd number in each loop and the other denotes to the tail. If the sum of the numbers the three index refers to equals to 0, I push it to the 2D vector; If the sum is greater than 0, I move the tail index forward; If the sum is smaller than 0, I move the front index backward. If the front index is greater or equal to 0 and no sum is fitted, I enter into next loop. 
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+vector<vector<int> > findTriplet(vector<int>& nums, int n)
+{
+	sort(nums.begin(), nums.end());
+	vector<vector<int> > res;
+	int i=0, j=0, k=n-1;
+	for (i=0;i<n-2;i++)
+	{
+		j = i+1;
+		k = n-1;
+		while (j < k){
+			int sum = nums[i] + nums[j] + nums[k];
+			if (sum == 0)
+			{
+				res.push_back({nums[i], nums[j], nums[k]});
+				while (j < k && nums[j] == nums[j+1]){ j++;}
+				j++;
+			}
+			else if (sum > 0){ k--;}
+			else { j++;}
+		}
+		while (nums[i] == nums[i+1]){i++;}
+	}
+	return res;
+}
+	\end{lstlisting}
+\textbf{Time complexity:}
+
+The time complexity of my program is equal to $O(n^2).$.
+
+First, the sort function  in <vector> library applies advanced quick sort, and it's time complexity is $O(\log n)$. 
+
+For the \textbf{for} loop, it iterates $n-2$ times from $i = 0$ to $t < n-2$ in total. In the \textbf{for} loop, the worst case happens in the first \textbf{if} branch, in which in every \textbf{for} loop, we cannot find suitable head and tail index.  In this case, given i,  $n-j = n - i -1$ times of comparisons between j and k are done, and $\sum_{i=0}^{n-2}n-i-1 = \frac{n(n-1)}{2}$ times of comparisons are needed in the \textbf{for} loop, and the time complexity in the \textbf{for} loop is $O(n^2)$.
+
+Therefore, the total time complexity of my program is $O(n^2)$.
+ 
+
+
+
+\end{solution}
+
+\item Equivalence Class
+
+\begin{definition}[$o$-Notation]
+Let $f(n)$ and $g(n)$ be functions from the set of natural numbers to the set of nonnegative real numbers. $f(n)$ is said to be $o(g(n))$, written as $f(n)=o(g(n))$, if
+$$\forall c>0.\exists n_{0}.\forall n\ge n_{0}.f(n)<c g(n).$$
+\end{definition}
+
+An equivalence relation $\mathcal{R}$ on the set of complexity functions is defined as follows: $$f\mathcal{R}g \mbox{ if and only if }
+f(n)=\Theta(g(n)).$$ A complexity class is an equivalence class of $\mathcal{R}$.
+
+The equivalence classes can be ordered by $\prec$ defined as: $f\prec g$ iff $f(n)=o(g(n))$.
+
+{\color{purple}Example: $1 \prec \log \log n \prec \log n \prec \sqrt{n} \prec n^{\frac{3}{4}} \prec n \prec n \log n \prec n^2 \prec 2^n \prec n! \prec 2^{n^2}$.}
+
+Please order the following functions by $\prec$ and give your explanation: $$(\sqrt{2})^{\log n}, (n+1)!, 
+ne^n, (\log n)!, n^3,  n^{1/\log n}.$$
+
+
+
+
+\begin{solution}
+	~\\
+{Order: }
+$$
+n^{1/{\log n}} \prec (\sqrt{2})^{\log n} \prec n^3 \prec (\log n)! \prec ne^n \prec (n+1)!
+$$
+
+Explanation:
+
+\textbf{(i) }
+
+First, we do simplifications on the first two terms $n^{1/{\log n}}$ and $(\sqrt{2})^{\log n}$
+$$
+n^{1/{\log n}} = n^{\log_n^2 } = 2
+$$
+
+$$
+(\sqrt{2})^{\log n} = 2^{{1/2}^{\log n}} = 2^{{\log n }^{1/2}} = \sqrt{n}
+$$
+Obviously, we have: 
+$$
+n^{1/{\log n}} \prec (\sqrt{2})^{\log n} \prec n^3
+$$
+
+\textbf{(ii)}
+
+Now, we prove that $ne^n \prec (n+1)!$ 
+
+We have:
+$$
+\dfrac{ne^n}{(n+1)!} < \dfrac{ne^n}{n! \cdot n} = \dfrac{e^n}{n!} = \dfrac{e\cdot e ...... \cdot e}{1 \cdot 2 ...... \cdot n}
+$$
+When n is greater than 2, $\dfrac{e}{n} <1$, so $\dfrac{e \cdot ... e}{3 \cdot ... dn} \rightarrow 0$  when $n \rightarrow \infty$, while $\dfrac{e\cdot e}{1 \cdot 2}$ is bounded.
+Therefore, we have: $$ne^n = O ((n+1)!)$$
+
+\textbf{(iii) }
+
+To do the following proves, another Lemma is needed:
+
+\textbf{Lemma}: $n\log n = \Theta{(\log n!)}$
+
+\textbf{Proof}: 
+
+1)First, we prove  $\log n! = O({n \log n})$
+$$\log (n !)=\sum_{i=1}^{n} \log (i) \leq \sum_{i=1}^{n} \log (n)=\operatorname{nlog}(n)=O(n \log n)$$
+2) Second, we prove  $n\log n = O{(\log n!)}$
+$$
+\log (n !) \geq \log \left(\frac{n}{2}\right)^{\frac{n}{2}}=\frac{n}{2} \log \frac{n}{2}=\frac{n}{2} \log n-\frac{n}{2} \log 2 
+$$
+When $n \geq 4$, $\frac{n}{2} \log 2 < \frac{1}{4}n \log n$, we have:
+$$
+\log (n !) \geq  \dfrac{n}{2} \log n-\dfrac{1}{4}  n \log n = \dfrac{1}{4}  n \log n 
+$$
+So, $n\log n = O{(\log n!)}$
+
+Therefore, according to 1) and 2), $n\log n = \Theta{(\log n!)}$.
+
+
+\textbf{(iv)}
+
+Now we prove another equivalence relation: $(\log n)  != \Theta((\log n)^{\log n})$
+
+Replacing n with $\log n $ in the equation $n\log n = \Theta{(\log n!)}$ we just proved, we get:
+$$
+\log n \cdot \log \log n  = \Theta{(\log (\log n )!)}
+$$
+Do 	exponential power of two with base in this equation, we get:
+$$
+(\log n)^{\log n} = \Theta((\log n)! )
+$$ 
+
+\textbf{(v)}
+Now we prove $n^3 \prec (\log n)!$
+\begin{align*}
+	\log\dfrac{n^3}{(\log n)^{\log n}} &= \log n^3  - \log n \cdot \log\log n\\
+	&= \log n (3 - \log \log n)
+\end{align*}
+When $n \rightarrow \infty$, $\log n \rightarrow \infty$, and $3 - \log \log n \rightarrow -\infty$, so $	\log\dfrac{n^3}{(\log n)^{\log n} }\rightarrow -\infty$
+
+So, we have $$\dfrac{n^3}{(\log n)^{\log n} }\rightarrow 0  \text{ when }  n \rightarrow \infty$$
+
+Therefore, $n^3 \prec (\log n)^{\log n}$. Also, since $ (\log n)^{\log n} = \Theta((\log n)! )$
+
+We get: $$n^3 \prec (\log n)!$$
+
+\textbf{(vi)}
+
+ We prove $ (\log n)! \prec ne^n$
+\begin{align*}
+\log \frac{(\log n)^{\log n}}{n e^n} &= \log n \cdot \log\log n - \log n -n\\
+&= \log n (\log\log n -1) -n\\
+&\leq \log n \cdot \log n - \log n -n\\
+&< \sqrt{n} \cdot \sqrt{n} -\log n -n\\
+&= -\log n 
+\end{align*}
+
+When $n \rightarrow \infty$, $\log n \rightarrow \infty$, so $\log \dfrac{(\log n)^{\log n}}{n e^n} \rightarrow -\infty$
+
+So, we have $$ \frac{(\log n)^{\log n}}{n e^n} \rightarrow 0  \text{ when }  n \rightarrow \infty$$
+
+Therefore, $ (\log n)^{\log n} \prec ne^n$. Also, since $ (\log n)^{\log n} = \Theta((\log n)! )$
+
+We get: $$ (\log n)! \prec ne^n$$
+
+
+%$$\forall c>0.\exists n_{0}.\forall n\ge n_{0}.f(n)<c g(n)$$
+\end{solution}
+
+\end{enumerate}
+
+%========================================================================
+\end{document}

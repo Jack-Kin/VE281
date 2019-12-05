@@ -1,0 +1,342 @@
+\documentclass[12pt,a4paper]{article}
+%\usepackage{ctex}
+\usepackage{amsmath,amscd,amsbsy,amssymb,latexsym,url,bm,amsthm}
+\usepackage{epsfig,graphicx,subfigure}
+\usepackage{enumitem,balance}
+\usepackage{wrapfig}
+\usepackage{mathrsfs,euscript}
+\usepackage[x11names,svgnames,dvipsnames]{xcolor}
+\usepackage{hyperref}
+\usepackage[vlined,ruled,commentsnumbered,linesnumbered]{algorithm2e}
+\usepackage{listings}
+\usepackage{multicol}
+%\usepackage{fontspec}
+
+\renewcommand{\listalgorithmcfname}{List of Algorithms}
+\renewcommand{\algorithmcfname}{Alg}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{exercise}{Exercise}
+\newtheorem*{solution}{Solution}
+\newtheorem{definition}{Definition}
+\theoremstyle{definition}
+
+
+%\numberwithin{equation}{section}
+%\numberwithin{figure}{section}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\newcommand{\postscript}[2]
+ {\setlength{\epsfxsize}{#2\hsize}
+  \centerline{\epsfbox{#1}}}
+
+\renewcommand{\baselinestretch}{1.0}
+
+\setlength{\oddsidemargin}{-0.365in}
+\setlength{\evensidemargin}{-0.365in}
+\setlength{\topmargin}{-0.3in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{10.1in}
+\setlength{\textwidth}{7in}
+\makeatletter \renewenvironment{proof}[1][Proof] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+\makeatletter
+\renewenvironment{solution}[1][Solution] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\bfseries#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse} \makeatother
+
+
+\definecolor{codegreen}{rgb}{0.44,0.68,0.28}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.96,0.96,0.96}
+
+\lstset{
+language=C++,
+frame=shadowbox,
+keywordstyle = \color{blue}\bfseries,
+commentstyle=\color{codegreen},
+tabsize = 4,
+backgroundcolor=\color{backcolour},
+numbers=left,
+numbersep=5pt,
+breaklines=true,
+emph = {int,float,double,char},emphstyle=\color{orange},
+emph ={[2]const, typedef},emphstyle = {[2]\color{red}} }
+
+
+
+\begin{document}
+\noindent
+
+%========================================================================
+\noindent\framebox[\linewidth]{\shortstack[c]{
+\Large{\textbf{Lab04-Hashing}}\vspace{1mm}\\
+VE281 - Data Structures and Algorithms, Xiaofeng Gao, TA: Qingmin Liu, Autumn 2019}}
+%CS26019 - Algorithm Design and Analysis, Xiaofeng Gao, Autumn 2019}}
+\begin{center}
+\footnotesize{\color{red}$*$ Please upload your assignment to website. Contact webmaster for any questions.}
+
+\footnotesize{\color{blue}$*$ Name:Jin Zhejian  \quad Student ID:517370910167 \quad Email: jinzhejian@outlook.com}
+\end{center}
+
+
+\begin{enumerate}
+
+\item  Given a sequence of inputs 192, 42, 142, 56, 39, 319, 14, insert them
+into a hash table of size 10. Suppose that the hash function is $h(x) = x\%10$. Show the
+result for the following implementations:
+	\begin{enumerate}
+	\item Hash table using separate chaining. Assume that the insertion is always at the
+beginning of each linked list.
+	\item Hash table using linear probing.
+	\item Hash table using quadratic probing.
+	\item Hash table using double hashing, with the second hash function as $h_2 (x) = (x+4)\%7$.
+	\end{enumerate}
+
+\begin{solution}
+	~\\
+		\begin{enumerate}
+		\item Hash table using separate chaining:
+		
+		[0] [  ] 
+		
+		[1] [  ]
+				
+		[2] [  ] $\rightarrow$ [142] $\rightarrow$ [42] $\rightarrow$ [192]
+						
+		[3] [  ]
+		
+		[4] [  ] $\rightarrow$ [14]
+		
+		[5] [  ]
+		
+		[6] [  ] $\rightarrow$ [56]
+		
+		[7] [  ]
+		
+		[8] [  ]
+		
+		[9] [  ] $\rightarrow$ [319]$\rightarrow$[39]
+
+
+		\item Hash table using linear probing:
+		
+\begin{table}[ht]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+		\hline
+		
+		319 &  & 192 & 42 & 142 & 14 & 56 &  &  & 39 \\ \hline 
+		
+	\end{tabular}
+\end{table}
+		
+		\item Hash table using quadratic probing:
+		
+		\begin{table}[ht]
+			\centering
+%			\caption{TableName}
+			\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+				\hline
+				
+				319 &  & 192 & 42 & 14 &  & 142 & 56 &  & 39 \\ \hline
+				
+			\end{tabular}
+		\end{table}
+		
+		\item Hash table using double hashing, $h_2 (x) = (x+4)\%7$:
+		
+				\begin{table}[ht]
+			\centering
+			%			\caption{TableName}
+			\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+				\hline
+				
+		56 &319  & 192 &  & 14 &  & 42 &  & 142  & 39 \\ \hline 
+				
+			\end{tabular}
+		\end{table}
+	\end{enumerate}
+\end{solution}
+
+
+
+\item	 Show the result of rehashing the four hash tables in the Problem 1. Rehash
+using a new table size of 14, and a new hash function $h(x) = x\%14$. {\color{blue}(Hint: The order
+in rehashing depends on the order stored in the old hash table, not on their initial
+inserting order.)}
+
+\begin{solution}
+	~\\
+	\begin{enumerate}
+		\item Hash table using separate chaining:
+		
+		[0 ] [  ] $\rightarrow$ [56] $\rightarrow$ [14] $\rightarrow$ [42]
+		
+		[1 ]  [  ]
+		
+		[2 ] [  ] $\rightarrow$ [142] 
+		
+		[3 ] [  ]
+		
+		[4 ] [  ] 
+		
+		[5 ] [  ]
+		
+		[6 ] [  ] 
+		
+		[7 ] [  ]
+		
+		[8 ] [  ]
+		
+		[9 ] [  ] 
+		
+		[10] [  ] $\rightarrow$ [192]
+		
+		[11] [  ]$\rightarrow$ [39] $\rightarrow$ [319]
+	
+		[12] [  ]
+		
+		[13] [  ]
+		\item Hash table using linear probing:
+		
+		\begin{table}[ht]
+			\centering
+			\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+				\hline
+				
+				42 & 14 & 142 &56  &  &  &  & &  &  &192 &319  & 39&\\ \hline 
+				
+			\end{tabular}
+		\end{table}
+		
+		\item Hash table using quadratic probing:
+		
+
+		\begin{table}[ht]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+		\hline
+		
+				42 & 14 & 142 &  & 56 &  &  &  &  &  &192 &319  & 39&\\ \hline 
+		
+	\end{tabular}
+\end{table}
+		
+		\item Hash table using double hashing, $h_2 (x) = (x+4)\%7$:
+		
+		\begin{table}[ht]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+		\hline
+		
+				56 &  & 142 &  &14  &  &  &    & 42 & &192  & 319& 39 & \\ \hline 
+		
+	\end{tabular}
+\end{table}
+	\end{enumerate}
+\end{solution}
+
+\item  Suppose we want to design a hash table containing at most 900 elements using
+linear probing. We require that an unsuccessful search needs no more than 8.5 compares
+and a successful search needs no more than 3 compares on average. Please determine
+a proper hash table size.
+
+\begin{solution}
+	$$
+	\begin{array}{l}{U(L)=\frac{1}{2}\left[1+\left(\frac{1}{1-L}\right)^{2}\right] \leq 8.5 \Rightarrow L \leq \frac{3}{5}} \\ 
+	{S(L)=\frac{1}{2}\left[1+\frac{1}{1-L}\right] \leq 10 \Rightarrow L \leq \frac{18}{19}}\end{array}
+	$$
+	Therefore, $L  = \dfrac{|s|}{n}\leq \dfrac{3}{4}$ $\Rightarrow$ $n \geq \dfrac{4}{3} \cdot 900 = 1200$
+	
+	We pick $n$ as a prime number, i.e. $n = 1201$.
+	
+\end{solution}
+
+
+\item Implement queues with two stacks. We know that stacks are first in last out (FILO) and queues are first in first out (FIFO). We can implement queues with two stacks. The method is as follows:
+	\begin{itemize}
+		\item{For \textbf{enqueue} operation,} push the element into stack $S_1$.
+		\item{For \textbf{dequeue} operation,} there are two cases:
+		\begin{itemize}
+			\item \textbf{$S_2 = \emptyset$,} pop all elements in $S_1$, push these elements into $S_2$, pop $S_2$
+			\item \textbf{$S_2 \neq \emptyset$,} pop $S_2$
+		\end{itemize}
+%$$
+%\left\{  
+%             \begin{aligned}        
+%             &pop all elements in S_1, push these elements in S_2, pop S_2, & S_2 = \emptyset  \\  
+%            &pop S_2, &    S_2 \neq \emptyset
+%             \end{aligned}  
+%\right.  
+%$$ 
+	\end{itemize}
+	Using amortized analysis to calculate the complexity of \textbf{enqueue} and \textbf{dequeue} step.
+
+
+\end{enumerate}
+
+
+\begin{solution}
+~\\
+\textbf{	Aggregate analysis:}
+
+	First, we calculate the cost of each operation, assuming that the cost for one \textbf{pop} or \textbf{push} operation is 1:
+	\begin{itemize}
+	\item For the \textbf{enqueue} operation,we push one element into $S_1$, so the cost is 1.
+	
+	\item For the \textbf{dequeue} operation, when $S_2 \neq \emptyset$, we only need to pop one element from  $S_2$, so the cost is 1.
+	
+	\item For the \textbf{dequeue} operation, when $S_2 = \emptyset$, suppose there are $n$ elements in $S_1$, we need to pop all of them from $S_1$, push all into $S_2$, and pop one element from the $S_2$, so, the cost is $2n+1$.
+	\end{itemize}
+	
+	Now, considering a sequence of $n$ operations on two empty stack $S_1$, $S_2$. We can divide the problem into two cases:
+		\begin{itemize}
+			\item[1.] $S_1$ has at least gone through 1 "all clear" operations, i.e. the \textbf{dequeue} when $S_2 = \emptyset$ .
+			\item[2.] $S_2$ has never gone through  the \textbf{dequeue} operation when $S_2 = \emptyset$ .
+		\end{itemize}
+	
+	Obviously, case 2 needs fewer costs than case 1. Also, case 1 happens rarely, so, by amortized analysis, we only need to calculate the total costs in case 1.
+	
+	Assuming $S_2$  has done $k$ times \textbf{dequeue} when $S_2 = \emptyset$, therefore, $S_1$ has been cleared  (all pop out) for $k$ times. For each state from
+	$S_1$ is empty to $S_1$ is empty again, we denote it as Bucket i, with operation numbers $n_i$. For the state from the last time $S_2$ is empty to the last operation, it is denoted as remaining bucket with $n_{rest}$ operations.  The partition is shown in the following graph.
+	\begin{table}[ht]
+		\centering
+%		\caption{TableName}
+		\begin{tabular}{|c|c|c|c|c|c|}
+			\hline
+			
+			$n_i$ & ...... & $n_i$ & ...... & $n_k$ & $n_{rest}$ \\ \hline
+			Bucket 1 &......  & Bucket i & ...... & Bucket k & remaining Bucket  \\ \hline
+			
+		\end{tabular}
+	\end{table}
+	
+	We have:
+	$$
+	n = \sum_{i=1}^k n_i + n_{rest}
+	$$
+	In bucket i,  we can easily calculate the complexity:
+	\begin{align*}
+			T(n_i) & = Cost_\text{enqueue} + Cost_\text{dequeue when empty} + Cost_\text{dequeue when not empty} \\
+			& = \frac{n_i}{2} + \frac{n_i}{2} -1 + 2\cdot \frac{n_i}{2}+1 \\
+			& = 2n_i
+	\end{align*}
+	
+Then, we sum up $T(n_i)$ and get:
+	\begin{align*}
+	T(n) &= \sum_{i=1}^k T(n_i) + T(n_{rest}) \\
+			&= \sum_{i=1}^k 2n_i + n_{rest} \\
+			& \leq \sum_{i=1}^k 2n_i + 2 n_{rest}\\
+			&= 2n	
+	\end{align*}
+	
+	Therefore, on average, the \textbf{enqueue} and \textbf{dequeue} operation takes $O(1)$ time.
+	
+\end{solution}
+
+%========================================================================
+\end{document}
